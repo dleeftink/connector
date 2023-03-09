@@ -1,66 +1,59 @@
 const express = require('express');
-const app = express();
-const port = 3000;
-
-app.get('/', async (req, res) => {
-  
- res.send({answer:true,resp})
-
-})
-
-app.listen(port, () => {
-  console.log(`listening at http://localhost:${port}`);
-});
-
-/*const express = require('express');
-const cors = require('cors');
-const Unblocker = require('unblocker');
 const path = require('path');
-const axios = require('axios');
-const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
 
-const app = express();
+const puppeteer = require('puppeteer-core');
+const chromium = require('chrome-aws-lambda');
 
 const port = 3010;
-
-function XFrameSameOrigin(data) {
-  data.headers['x-frame-options'] = 'allow';
-}
-
-var unblocker = new Unblocker({
-    prefix: '/p',
-      responseMiddleware: [
-    XFrameSameOrigin,
-  ]
-});
-
-app.use(unblocker);
-
-app.use(
-  cors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-  })
-);
+const app = express();
 
 app.get('/', async (req, res) => {
-  const proxyAgent = new HttpsProxyAgent({
-    keepAlive: true,
-    keepAliveMsecs: 1000,
-    maxSockets: 256,
-    maxFreeSockets: 256,
-  });
-  const response = await axios('https://httpbin.org/ip?json', {
-   // httpsAgent: proxyAgent,
-  });
+  let url = req.url || 'https://www.wikipedia.org';
+  let result = null;
+  let browser = null;
 
-  const body = (await response)?.data;
+  let options = {
+    args: chromium.args,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless,
+  };
 
-  res.send(JSON.stringify({ hello: 'world', body }));
+  try {
+    browser = await puppeteer.launch(options);
+    const page = await browser.newPage();
+
+    await page.setViewport({
+      width: 1920,
+      height: 1080,
+      deviceScaleFactor: 1,
+    });
+
+    await page.goto(url);
+
+    const file = await page.screenshot({
+      type: 'png',
+    });
+
+    await browser.close();
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', `image/png`);
+
+    res.end(file);
+
+  } catch (error) {
+
+    console.log(error);
+
+  } finally {
+    if (browser !== null) {
+      await browser.close();
+    }
+  }
+
+  //  res.send({result});
 });
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-*/
