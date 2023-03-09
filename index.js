@@ -2,9 +2,16 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-app.get('/', async (req, res) => {
+const got = require('got');
 
-  res.send({answer:true})
+console.log(got)
+
+app.get('/', async (req, res) => {
+  
+ let body = await got('http://ipwho.is')
+
+ res.send({answer:true,body})
+
 })
 
 app.listen(port, () => {
