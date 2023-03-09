@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
-const port = 3010;
+const port = 3011;
 const path = require('path');
 
 const { createTunnel, closeTunnel, redactUrl } = require('proxy-chain');
 
 app.get('/', async (req, res) => {
-  const PROXY_URL = 'http://161.35.70.249:8080';
+  const PROXY_URL = 'http://user:1234@161.35.70.249:8080';
   const TARGET_HOST = 'en.wikipedia.org:443';
 
   // Create tunnel for the service, this call will start local tunnel and
@@ -14,11 +14,19 @@ app.get('/', async (req, res) => {
   // Here we set "port" to 9999, but you can use 0 to get a random port.
   // The "verbose" option causes a lot of logging
   const tunnelInfo = await createTunnel(PROXY_URL, TARGET_HOST, {
-    port: 9999,
+    port: 23,
     verbose: true,
   });
 
   res.send({ answer: true, tunnelInfo });
+  
+      // Wait forever...
+      await new Promise(() => {});
+
+      // Normally, you'd also want to close the tunnel and all open connections
+      await closeTunnel(tunnelInfo, true);
+
+
 });
 
 app.listen(port, () => {
