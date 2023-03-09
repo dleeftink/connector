@@ -4,13 +4,12 @@ const port = 3000;
 
 const needle = require('needle');
 
-console.log(needle)
-
 app.get('/', async (req, res) => {
   
-// let body = needle('http://ipwho.is')
+let resp = (await needle('get','https://pub.reflow.workers.dev/http://ipwho.is')).body;
+console.log(resp);
 
- res.send({answer:true,body})
+ res.send({answer:true,resp})
 
 })
 
