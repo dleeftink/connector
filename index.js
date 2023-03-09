@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-const got = require('got');
+const needle = require('needle');
 
-console.log(got)
+console.log(needle)
 
 app.get('/', async (req, res) => {
   
- let body = await got('http://ipwho.is')
+// let body = needle('http://ipwho.is')
 
  res.send({answer:true,body})
 
