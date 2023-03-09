@@ -21,7 +21,7 @@ app.get('/', async (req, res) => {
    // agent: proxyAgent,
   });
 
-  const body = (await response).data;
+  const body = (await response)?.data;
 
   res.send(JSON.stringify({ hello: 'world', body }));
 });
