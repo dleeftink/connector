@@ -12,12 +12,12 @@ const HttpsProxyAgent = require('https-proxy-agent');
 app.use(cors({
   "origin": "*",
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
+  "preflightContinue": true,
 }));
 
 app.get('/', async (req, res) => {
 //  const proxyAgent = new HttpsProxyAgent('http://46.250.171.31:8080');
-  const response = await axios('https://api.ipify.org/?format=json', {
+  const response = await axios('http://ipwho.is', {
    // agent: proxyAgent,
   });
 
