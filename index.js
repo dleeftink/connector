@@ -6,7 +6,7 @@ const needle = require('needle');
 
 app.get('/', async (req, res) => {
   
-let resp = (await needle('get','https://pub.reflow.workers.dev/http://ipwho.is')).body;
+let resp = (await needle('get','https://pub.reflow.workers.dev/')).body;
 console.log(resp);
 
  res.send({answer:true,resp})
