@@ -1,24 +1,30 @@
-
-
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
 const app = express();
 const port = 3010;
 const path = require('path');
 
 const axios = require('axios');
-const HttpsProxyAgent = require('https-proxy-agent');
+const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
 
-app.use(cors({
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": true,
-}));
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+  })
+);
 
 app.get('/', async (req, res) => {
-//  const proxyAgent = new HttpsProxyAgent('http://46.250.171.31:8080');
-  const response = await axios('http://ipwho.is', {
-   // agent: proxyAgent,
+  const proxyAgent = new HttpsProxyAgent({
+    keepAlive: true,
+    keepAliveMsecs: 1000,
+    maxSockets: 256,
+    maxFreeSockets: 256,
+    proxy: 'http://170.244.27.61:8888',
+  });
+  const response = await axios('https://httpbin.org/ip?json', {
+    httpsAgent: proxyAgent,
   });
 
   const body = (await response)?.data;
