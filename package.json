@@ -13,6 +13,7 @@
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
     "node-fetch": "^3.3.0",
+    "proxy-chain": "^2.2.1",
     "unblocker": "^2.3.0"
   }
 }
