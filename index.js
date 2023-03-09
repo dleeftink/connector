@@ -2,13 +2,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-const needle = require('needle');
-
 app.get('/', async (req, res) => {
   
-let resp = (await needle('get','https://pub.reflow.workers.dev/')).body;
-console.log(resp);
-
  res.send({answer:true,resp})
 
 })
