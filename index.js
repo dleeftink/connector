@@ -14,7 +14,7 @@ function XFrameSameOrigin(data) {
 }
 
 var unblocker = new Unblocker({
-    prefix: '/proxy',
+    prefix: '/p',
       responseMiddleware: [
     XFrameSameOrigin,
   ]
@@ -36,7 +36,6 @@ app.get('/', async (req, res) => {
     keepAliveMsecs: 1000,
     maxSockets: 256,
     maxFreeSockets: 256,
-    proxy: 'http://170.244.27.61:8888',
   });
   const response = await axios('https://httpbin.org/ip?json', {
    // httpsAgent: proxyAgent,
