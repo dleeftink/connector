@@ -1,4 +1,7 @@
+
+
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const port = 3010;
 const path = require('path');
@@ -6,14 +9,19 @@ const path = require('path');
 const axios = require('axios');
 const HttpsProxyAgent = require('https-proxy-agent');
 
-app.use(express.static('static'));
+app.use(cors({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+}));
 
 app.get('/', async (req, res) => {
-  const proxyAgent = new HttpsProxyAgent('http://46.250.171.31:8080');
+//  const proxyAgent = new HttpsProxyAgent('http://46.250.171.31:8080');
   const response = await axios('https://api.ipify.org/?format=json', {
    // agent: proxyAgent,
   });
-  const body = await response.text();
+
+  const body = (await response).data;
 
   res.send(JSON.stringify({ hello: 'world', body }));
 });
