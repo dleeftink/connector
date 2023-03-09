@@ -1,11 +1,26 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const port = 3010;
+const Unblocker = require('unblocker');
 const path = require('path');
-
 const axios = require('axios');
 const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
+
+const app = express();
+
+const port = 3010;
+
+function XFrameSameOrigin(data) {
+  data.headers['x-frame-options'] = 'allow';
+}
+
+var unblocker = new Unblocker({
+    prefix: '/proxy',
+      responseMiddleware: [
+    XFrameSameOrigin,
+  ]
+});
+
+app.use(unblocker);
 
 app.use(
   cors({
@@ -24,7 +39,7 @@ app.get('/', async (req, res) => {
     proxy: 'http://170.244.27.61:8888',
   });
   const response = await axios('https://httpbin.org/ip?json', {
-    httpsAgent: proxyAgent,
+   // httpsAgent: proxyAgent,
   });
 
   const body = (await response)?.data;

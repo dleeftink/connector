@@ -12,6 +12,7 @@
     "hpagent": "^1.2.0",
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^3.3.0",
+    "unblocker": "^2.3.0"
   }
 }
